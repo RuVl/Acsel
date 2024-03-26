@@ -1,0 +1,29 @@
+version: '3.7'
+
+volumes:
+  postgres_volume:
+    driver: local
+
+  redis_volume:
+    driver: local
+
+services:
+  postgres:
+    image: postgres:16.2
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_volume:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7.2.4
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_volume:/data
+
+  telegram-bot:
+    build:
+      context: ./telegram_bot
+      dockerfile: Dockerfile
+
