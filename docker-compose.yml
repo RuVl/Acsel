@@ -10,20 +10,49 @@ volumes:
 services:
   postgres:
     image: postgres:16.2
-    ports:
-      - "5432:5432"
+    restart: always
+    expose:
+      - 5432
+    env_file: ./postgres/.env
     volumes:
       - postgres_volume:/var/lib/postgresql/data
+    healthcheck:
+      test: pg_isready -U $$POSTGRES_USER
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   redis:
     image: redis:7.2.4
-    ports:
-      - "6379:6379"
+    restart: always
+    expose:
+      - 6379
     volumes:
       - redis_volume:/data
+    healthcheck:
+        test: redis-cli ping
+        interval: 10s
+        timeout: 5s
+        retries: 3
 
   telegram-bot:
     build:
       context: ./telegram_bot
       dockerfile: Dockerfile
-
+    restart: always
+    env_file:
+      - ./telegram_bot/.env
+      - ./postgres/.env
+      - ./redis/.env
+    environment:
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    volumes:
+      - ./telegram_bot:/usr/src/app
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
