@@ -1,1 +1,1 @@
-from .main import main_menu_ckb
+from .products import main_menu_ckb

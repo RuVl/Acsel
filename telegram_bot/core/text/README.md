@@ -4,7 +4,7 @@
 
 Firstly, create `.pot` file with all by command:
 ```shell
-pybabel extract --input-dirs=. -o core/text/locales/messages.pot
+pybabel extract --sort-by-file --input-dirs=. --ignore-dirs=venv -o core/text/locales/messages.pot
 ```
 
 ---

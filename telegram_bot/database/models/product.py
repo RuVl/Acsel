@@ -11,7 +11,7 @@ class Product(Base):
 
     id: Mapped[int] = Column(Integer, primary_key=True)
 
-    name: Mapped[str] = Column(String(255), nullable=False)
+    name: Mapped[str] = Column(String(255), nullable=False, unique=True)
     description: Mapped[str] = Column(Text)
 
     price: Mapped[int] = Column(Numeric, nullable=False)

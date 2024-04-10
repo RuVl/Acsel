@@ -1,11 +1,21 @@
 from aiogram import Dispatcher
 from aiogram.utils.i18n import FSMI18nMiddleware
 
-from core.handlers.user import user_router
+from core.handlers.products import products_router
+from core.middlewares import DBUserMiddleware
 from core.text import i18n
 
 
 def register_middlewares(dp: Dispatcher):
+    # db_user middleware
+    db_user_middleware = DBUserMiddleware()
+
+    # Outer middleware for early dropping event
+    dp.message.outer_middleware(db_user_middleware)
+    dp.callback_query.outer_middleware(db_user_middleware)
+
+    dp.shutdown.register(db_user_middleware.close)
+
     # i18n middleware (message and callback)
     i18n_middleware = FSMI18nMiddleware(i18n, key='lang', middleware_key='language')
 
@@ -15,8 +25,7 @@ def register_middlewares(dp: Dispatcher):
 
 
 def register_routers(dp: Dispatcher):
-    # User router
-    dp.include_router(user_router)
+    dp.include_routers(products_router)
 
 
 def register_all(dp: Dispatcher):

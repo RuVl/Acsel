@@ -1,4 +1,4 @@
-FROM python:3.10
+FROM python:3.12
 LABEL authors="RuVl_13"
 
 # Update packages
@@ -17,9 +17,10 @@ ENV PIP_ROOT_USER_ACTION=ignore
 
 # Install requirements
 RUN pip3 install --no-cache-dir -r requirements.txt
+RUN pip3 install --no-cache-dir -r optional_requirements.txt
 
 # Compile languages
-RUN pybabel compile -d core/text/locales -D telegram
+RUN pybabel compile -d core/text/locales -D messages
 
 # Run app
 ENTRYPOINT python3 run.py

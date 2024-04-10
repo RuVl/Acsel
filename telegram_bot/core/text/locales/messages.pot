@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-04-09 02:12+0300\n"
+"POT-Creation-Date: 2024-04-10 21:06+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,33 +17,53 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.14.0\n"
 
-#: core/text/handlers/user.py:8
+#: core/keyboards/inline/products.py:13
+msgid "Cancel"
+msgstr ""
+
+#: core/text/handlers/products.py:8
 msgid ""
 "Welcome to our auto-sale service.\n"
 "Be sure to read the \"Rules and FAQ\" before using the service!"
 msgstr ""
 
-#: core/text/handlers/user.py:10
+#: core/text/handlers/products.py:10
+msgid "For any questions, please contact @TEST"
+msgstr ""
+
+#: core/text/handlers/products.py:12
 msgid "Choose product category"
 msgstr ""
 
-#: core/text/keyboards/common.py:7
+#: core/text/handlers/products.py:17
+msgid "Send name of category"
+msgstr ""
+
+#: core/text/keyboards/common.py:8
 msgid "Select action"
 msgstr ""
 
-#: core/text/keyboards/common.py:9
+#: core/text/keyboards/common.py:10
 msgid "Buy"
 msgstr ""
 
-#: core/text/keyboards/common.py:10
+#: core/text/keyboards/common.py:11
 msgid "Support"
 msgstr ""
 
-#: core/text/keyboards/common.py:11
+#: core/text/keyboards/common.py:13
+msgid "Add category"
+msgstr ""
+
+#: core/text/keyboards/common.py:14
+msgid "Add product"
+msgstr ""
+
+#: core/text/keyboards/common.py:16
 msgid "English"
 msgstr ""
 
-#: core/text/keyboards/common.py:12
+#: core/text/keyboards/common.py:17
 msgid "Russian"
 msgstr ""
 

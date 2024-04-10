@@ -1,1 +1,1 @@
-from .user import UserMessages
+from .products import CommonMessages, PrivilegeMessages

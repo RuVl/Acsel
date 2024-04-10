@@ -1,1 +1,1 @@
-from .common import MainMenu
+from .common import MainMenuCKbMessages

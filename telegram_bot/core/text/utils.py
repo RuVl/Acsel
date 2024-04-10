@@ -7,4 +7,4 @@ def escape_md_v2(text: str | None) -> str | None:
     if text is None:
         return None
 
-    return re.sub(r'([_*\[\]()~`>#+\-=|{}.!])', r'\\\1', text)
+    return re.sub(r'([_*\[\]()~`>#+\-=|{}.!])', r'\\\1', str(text))

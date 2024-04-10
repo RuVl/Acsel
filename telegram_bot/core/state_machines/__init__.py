@@ -1,1 +1,1 @@
-from .user import UserMenu
+from .main import MainMenu, PrivilegeActions

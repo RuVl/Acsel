@@ -13,13 +13,13 @@ class UserRights(enum.IntFlag, boundary=enum.STRICT):
 
     CAN_WRITE = 0b001  # Blocked or not
     CAN_BUY = 0b010  # Can buy products
-    CAN_BE_IN_AUCTION = 0b100  # Can take part in an auction sale
+    CAN_PARTICIPATE_AUCTION = 0b100  # Can take part in an auction sale
 
-    CAN_ADD_PRODUCT = 0b001_000  # Can add new products in stock
-    CAN_ADD_CATEGORY = 0b010_000  # Can add new categories of products
+    CAN_ADD_PRODUCT = 0b001 << 3  # Can add new products in stock
+    CAN_ADD_CATEGORY = 0b010 << 3  # Can add new categories of products
 
     BANNED = 0
-    USER = CAN_WRITE | CAN_BUY | CAN_BE_IN_AUCTION
+    USER = CAN_WRITE | CAN_BUY | CAN_PARTICIPATE_AUCTION
     MODERATOR = USER | CAN_ADD_PRODUCT
     ADMIN = MODERATOR | CAN_ADD_CATEGORY
 
