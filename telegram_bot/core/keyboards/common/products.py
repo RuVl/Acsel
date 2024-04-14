@@ -2,7 +2,8 @@ from aiogram.types import KeyboardButton
 from aiogram.utils.keyboard import ReplyKeyboardBuilder
 
 from core.text.keyboards import MainMenuCKbMessages
-from database.models import User, UserRights
+from database.enums import UserRights
+from database.models import User
 
 
 def main_menu_ckb(db_user: User = None, **kwargs):

@@ -3,11 +3,11 @@ from typing import Callable, Any, Awaitable
 
 from aiogram import BaseMiddleware, types
 from aiogram.fsm.storage.base import StorageKey
-from sqlalchemy import select
 
 from core.storages import get_storage
-from database import session_maker
-from database.models import User, UserRights
+from database.enums import UserRights
+from database.methods.user import get_user, create_user
+from database.models import User
 
 
 class DBUserMiddleware(BaseMiddleware):
@@ -27,8 +27,8 @@ class DBUserMiddleware(BaseMiddleware):
                        event: types.CallbackQuery | types.Message,
                        data: dict[str, Any],
                        ) -> Any:
-        chat = event.message.chat if isinstance(event, types.CallbackQuery) else event.chat
-        tg_user = event.from_user
+        chat: types.Chat = event.message.chat if isinstance(event, types.CallbackQuery) else event.chat
+        tg_user: types.User = event.from_user
 
         # Create fsm storage key
         key = StorageKey(
@@ -39,29 +39,21 @@ class DBUserMiddleware(BaseMiddleware):
 
         # Get cached user
         storage_data = await self.storage.get_data(key=key)
-        user = storage_data.get(self.key)
+        user: User = storage_data.get(self.key)
 
         # If no cached user - get it from db
         if user is None:
-            async with session_maker() as session:
-                query = select(User).where(User.id == event.user_id)
-                result = await session.execute(query)
-                user = result.scalar()
+            # get or create a new user in db
+            user = await get_user(tg_user.id)
+            if user is None:
+                user = create_user(tg_user)
 
-                # If no user found - create it
-                if user is None:
-                    user = User(telegram_id=tg_user.id, username=tg_user.username)
-                    session.add(user)
-
-                    await session.commit()
-                    await session.refresh(user)
-
-            # update cache
+            # update cached user
             storage_data[self.key] = user
-            await self.storage.set_data(key=key, data=user)
+            await self.storage.set_data(key=key, data=storage_data)
 
         # Provide db_user to handler and call it if the user is not BANNED
-        if user.rights & UserRights.CAN_WRITE:
+        if user.rights != UserRights.BANNED:
             data[self.middleware_key] = user
             return await handler(event, data)
 

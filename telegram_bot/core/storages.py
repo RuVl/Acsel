@@ -1,3 +1,4 @@
+import json
 from datetime import timedelta
 
 from aiogram.fsm.storage.base import BaseStorage
@@ -5,6 +6,7 @@ from aiogram.fsm.storage.redis import RedisStorage, DefaultKeyBuilder
 from redis.asyncio import Redis
 
 from core.env import RedisKeys
+from core.json_utils import TGDecoder, TGEncoder
 
 
 def get_storage(*,
@@ -24,5 +26,7 @@ def get_storage(*,
             with_destiny=key_builder_with_destiny
         ),
         state_ttl=state_ttl,
-        data_ttl=data_ttl
+        data_ttl=data_ttl,
+        json_dumps=lambda data: json.dumps(data, cls=TGEncoder),
+        json_loads=lambda data: json.loads(data, cls=TGDecoder)
     )
