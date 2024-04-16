@@ -16,4 +16,4 @@ privilege_router = Router()
 )
 async def main_menu_handler_add_category(msg: types.Message, state: FSMContext):
     await state.set_state(PrivilegeActions.ADD_CATEGORY)
-    await msg.answer(PrivilegeMessages.ask_category_name)
+    await msg.answer(text=PrivilegeMessages.ask_category_name)
