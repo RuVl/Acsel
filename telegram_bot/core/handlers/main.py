@@ -2,7 +2,7 @@ from aiogram import Dispatcher
 from aiogram.utils.i18n import FSMI18nMiddleware
 
 from core.handlers.products import products_router
-from core.middlewares import DBUserMiddleware, ChatDialogMiddleware, DropEmptyButtonMiddleware
+from core.middlewares import DBUserMiddleware, ChatDialogMiddleware, DropEmptyButtonMiddleware, PreserveFSMKeysMiddleware
 from core.text import i18n
 
 
@@ -28,6 +28,9 @@ def register_middlewares(dp: Dispatcher):
     # dialog_manager middleware
     dialog_manager_middleware = ChatDialogMiddleware()
     dp.message.middleware(dialog_manager_middleware)
+
+    # preserve_fsm_keys middleware
+    dp.update.middleware(PreserveFSMKeysMiddleware())
 
 
 def register_routers(dp: Dispatcher):

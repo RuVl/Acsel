@@ -23,7 +23,7 @@ logger = logging.getLogger('telegram')
 @category_router.message(
     MagicData(F.db_user.rights & UserRights.CAN_ADD_CATEGORY),
     F.text == MainMenuCKbMessages.add_category,
-    flags={'dialog': 'began creating a new category name'}
+    flags={'dialog': 'began creating a new category name', 'preserve_fsm': ''}
 )
 async def add_category_handler(msg: Message, state: FSMContext) -> Message:
     await state.clear()
@@ -54,7 +54,8 @@ async def add_category_name_handler(msg: Message, state: FSMContext) -> Message:
 @category_router.callback_query(
     MagicData(F.db_user.rights & UserRights.CAN_ADD_CATEGORY),
     CreateCategoryActions.ADD_CATEGORY_NAME,
-    F.data == 'create'
+    F.data == 'create',
+    flags={'preserve_fsm': ''}
 )
 async def create_category_handler(clb: CallbackQuery, state: FSMContext):
     state_data = await state.get_data()

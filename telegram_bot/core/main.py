@@ -1,4 +1,5 @@
 import logging
+from pathlib import Path
 
 from aiogram import Dispatcher
 
@@ -8,27 +9,30 @@ from core.storages import get_storage
 
 
 def setup_loggers():
+    LOGGING_FOLDER = Path('logging/')
+    LOGGING_FOLDER.mkdir(exist_ok=True)
+
     FORMATTER = logging.Formatter('%(asctime)s [%(levelname)s]: %(message)s', datefmt='%d-%m-%Y %H:%M:%S')
 
     # telegram logger
     telegram_logger = logging.getLogger('telegram')
     telegram_logger.setLevel(logging.DEBUG)
 
-    telegram_file_handler = logging.FileHandler('./telegram.log')
+    telegram_file_handler = logging.FileHandler(LOGGING_FOLDER / 'telegram.log')
     telegram_file_handler.setLevel(logging.DEBUG)
     telegram_file_handler.setFormatter(FORMATTER)
 
     telegram_logger.addHandler(telegram_file_handler)
 
-    # payments logger
-    payment_logger = logging.getLogger("payment")
-    payment_logger.setLevel(logging.INFO)
+    # json logger
+    json_logger = logging.getLogger('json')
+    json_logger.setLevel(logging.DEBUG)
 
-    # payment_file_handler = logging.FileHandler('./payment.log')
-    # payment_file_handler.setLevel(logging.DEBUG)
-    # payment_file_handler.setFormatter(FORMATTER)
+    json_file_handler = logging.FileHandler(LOGGING_FOLDER / 'json.log')
+    json_file_handler.setLevel(logging.DEBUG)
+    json_file_handler.setFormatter(FORMATTER)
 
-    # payment_logger.addHandler(payment_file_handler)
+    json_logger.addHandler(json_file_handler)
 
 
 async def start_bot():

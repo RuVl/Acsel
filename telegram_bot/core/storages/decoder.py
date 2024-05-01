@@ -1,4 +1,5 @@
 import json
+import logging
 import sys
 from datetime import datetime
 from importlib import util
@@ -11,6 +12,8 @@ class TGDecoder(json.JSONDecoder):
     """ Write decoder for all you need in state.get_data """
 
     def __init__(self, *args, **kwargs):
+        self.logger = logging.getLogger('json')
+
         super(TGDecoder, self).__init__(object_hook=self.object_hook, *args, **kwargs)
 
     @staticmethod
@@ -42,6 +45,8 @@ class TGDecoder(json.JSONDecoder):
         return type_
 
     def object_hook(self, o: dict[str, Any]) -> Any:
+        self.logger.debug(f'Decode {o}')
+
         _type, _value = o.get('_type'), o.get('_value')
         if _type is None or _value is None:
             return o

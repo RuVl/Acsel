@@ -23,7 +23,7 @@ logger = logging.getLogger('telegram')
     MagicData(F.db_user.rights & UserRights.CAN_BUY),
     BuyProductActions.CHOSE_QUANTITY,
     F.text.isdecimal(),
-    flags={'dialog': f'selected quantity {F.text}'}
+    flags={'dialog': f'selected quantity'}
 )
 async def select_quantity_handler(msg: Message, state: FSMContext, state_data: dict) -> Message:
     quantity, = str2int(msg.text)
@@ -114,7 +114,8 @@ async def sure2buy_handler(clb: CallbackQuery, state: FSMContext):
 
 @buy_router.callback_query(
     or_f(*BuyProductActions.__all_states__),
-    F.data == 'cancel'
+    F.data == 'cancel',
+    flags={'preserve_fsm': ''}
 )
 async def cancel_handler(clb: CallbackQuery, state: FSMContext):
     await clb.answer()

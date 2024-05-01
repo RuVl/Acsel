@@ -10,7 +10,9 @@ from aiogram.fsm.context import FSMContext
 class ChatDialogMiddleware(BaseMiddleware):
     """ Store and deletes last dialog message. Works with USER_IN_CHAT fsm strategy """
 
-    def __init__(self, flag_name: str = 'dialog', fsm_key: str = 'last_msg_id', logger_name: str = 'telegram'):
+    def __init__(self, /,
+                 flag_name: str = 'dialog', fsm_key: str = 'last_msg_id',
+                 logger_name: str = 'telegram'):
         self.flag_name = flag_name
         self.fsm_key = fsm_key
         self.logger = logging.getLogger(logger_name)
@@ -23,7 +25,6 @@ class ChatDialogMiddleware(BaseMiddleware):
                        data: dict[str, Any],
                        ) -> Any:
         description: str = get_flag(data, self.flag_name)
-
         if description is None:
             return await handler(event, data)
 

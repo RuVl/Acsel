@@ -25,7 +25,7 @@ logger = logging.getLogger('telegram')
 @file_router.message(
     MagicData(F.db_user.rights & UserRights.CAN_ADD_FILE),
     F.text == MainMenuCKbMessages.add_product_files,
-    flags={'dialog': 'choose category for a new product file'}
+    flags={'dialog': 'choose category for a new product file', 'preserve_fsm': ''}
 )
 async def add_product_file_handler(msg: Message, state: FSMContext) -> Message:
     await state.clear()

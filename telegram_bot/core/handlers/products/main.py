@@ -20,20 +20,16 @@ products_router = Router()
 products_router.include_routers(buy_router, create_router, paginator_router)
 
 
-@products_router.message(
-    CommandStart(),
-    flags={'dialog': 'call start command'}
-)
-async def start_handler(msg: Message, db_user: models.User, state: FSMContext) -> Message:
-    await state.clear()
-    return await msg.answer(text=CommonMessages.greeting, reply_markup=main_menu_ckb(db_user))
+@products_router.message(CommandStart())
+async def start_handler(msg: Message, db_user: models.User):
+    await msg.answer(text=CommonMessages.greeting, reply_markup=main_menu_ckb(db_user))
 
 
 @products_router.message(
     F.text.in_(MainMenuCKbMessages.common_replies()),
-    flags={'dialog': f'sent command: {F.text}'}
+    flags={'dialog': f'sent main menu command', 'preserve_fsm': ''}
 )
-async def main_menu_handler_user_replies(msg: Message, db_user: models.User, state: FSMContext, language: FSMI18nMiddleware) -> Message:
+async def main_menu_handler_user_replies(msg: Message, db_user: models.User, state: FSMContext, state_data: dict, language: FSMI18nMiddleware) -> Message:
     await state.clear()
 
     match msg.text:
@@ -46,10 +42,9 @@ async def main_menu_handler_user_replies(msg: Message, db_user: models.User, sta
             return await msg.answer(CommonMessages.choose_category, reply_markup=keyboard)
         case MainMenuCKbMessages.support:
             return await msg.answer(CommonMessages.support)
-
         case MainMenuCKbMessages.english:
             await language.set_locale(state, 'en')
-            return await start_handler(msg, db_user, state)
+            await start_handler(msg, db_user)
         case MainMenuCKbMessages.russian:
             await language.set_locale(state, 'ru')
-            return await start_handler(msg, db_user, state)
+            await start_handler(msg, db_user)

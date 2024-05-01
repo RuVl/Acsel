@@ -22,7 +22,8 @@ logger = logging.getLogger('telegram')
         *CreateProductActions.__all_states__,
         *CreateFileActions.__all_states__
     ),
-    F.data == 'cancel'
+    F.data == 'cancel',
+    flags={'preserve_fsm': ''}
 )
 async def cancel_handler(callback: types.CallbackQuery, state: FSMContext):
     await callback.answer()

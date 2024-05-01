@@ -23,7 +23,7 @@ logger = logging.getLogger('telegram')
 @product_router.message(
     MagicData(F.db_user.rights & UserRights.CAN_ADD_PRODUCT),
     F.text == MainMenuCKbMessages.add_product,
-    flags={'dialog': 'choose a category for a new product'}
+    flags={'dialog': 'choose a category for a new product', 'preserve_fsm': ''}
 )
 async def add_product_handler(msg: Message, state: FSMContext) -> Message:
     await state.clear()
@@ -126,7 +126,8 @@ async def add_product_price_handler(msg: Message, state: FSMContext, state_data:
 @product_router.callback_query(
     MagicData(F.db_user.rights & UserRights.CAN_ADD_PRODUCT),
     CreateProductActions.SURE_CREATE_PRODUCT,
-    F.data == 'create'
+    F.data == 'create',
+    flags={'preserve_fsm': ''}
 )
 async def create_product_handler(clb: CallbackQuery, state: FSMContext):
     state_data = await state.get_data()

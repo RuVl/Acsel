@@ -1,4 +1,5 @@
 import json
+import logging
 from datetime import datetime
 from decimal import Decimal
 from pathlib import Path
@@ -14,9 +15,13 @@ class TGEncoder(json.JSONEncoder):
 
     def __init__(self, *args: Any, **kwargs: Any):
         self.visited = set()
+        self.logger = logging.getLogger('json')
+
         super().__init__(*args, **kwargs)
 
     def default(self, o: Any) -> Any:
+        logging.debug(f'Encoding {type(o)}: {o!r}')
+
         if isinstance(o, Decimal):
             return float(o)
         elif isinstance(o, Path):  # pathlib.Path

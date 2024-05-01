@@ -1,8 +1,10 @@
+import logging
 from datetime import timedelta
 from typing import Callable, Any, Awaitable
 
 from aiogram import BaseMiddleware, types
 from aiogram.dispatcher.event.bases import CancelHandler
+from aiogram.dispatcher.middlewares.user_context import EVENT_FROM_USER_KEY, EVENT_CHAT_KEY
 from aiogram.fsm.storage.base import StorageKey
 
 from core.storages import get_storage
@@ -14,22 +16,31 @@ from database.models import User
 class DBUserMiddleware(BaseMiddleware):
     """ Get user from cache or database and check if user CAN_WRITE """
 
-    def __init__(self, prefix='user_info', cache_expire=timedelta(minutes=1), key='user', middleware_key='db_user') -> None:
+    def __init__(self, /,
+                 prefix: str = 'user_info', key: str = 'user', middleware_key: str = 'db_user',
+                 cache_expire: timedelta = timedelta(minutes=1),
+                 logger_name: str = 'telegram') -> None:
         # Get storage with prefix and set data ttl
         self.storage = get_storage(key_builder_prefix=prefix, data_ttl=cache_expire)
+        self.logger = logging.getLogger(logger_name)
 
         self.key = key
         self.middleware_key = middleware_key
 
-        super(DBUserMiddleware, self).__init__()
+        super().__init__()
 
     async def __call__(self,
                        handler: Callable[[types.CallbackQuery | types.Message, dict[str, Any]], Awaitable[Any]],
-                       event: types.CallbackQuery | types.Message,
+                       event: types.TelegramObject,
                        data: dict[str, Any],
                        ) -> Any:
-        chat: types.Chat = event.message.chat if isinstance(event, types.CallbackQuery) else event.chat
-        tg_user: types.User = event.from_user
+
+        tg_user: types.User = data[EVENT_FROM_USER_KEY]
+        chat: types.Chat = data[EVENT_CHAT_KEY]
+
+        if tg_user is None or chat is None:
+            self.logger.info(f'No EVENT_FROM_USER_KEY or EVENT_CHAT_KEY provided by event for check user privileges! Skip checking.')
+            return await handler(event, data)
 
         # Create a storage key
         key = StorageKey(
