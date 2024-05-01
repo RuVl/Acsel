@@ -2,6 +2,7 @@ from datetime import timedelta
 from typing import Callable, Any, Awaitable
 
 from aiogram import BaseMiddleware, types
+from aiogram.dispatcher.event.bases import CancelHandler
 from aiogram.fsm.storage.base import StorageKey
 
 from core.storages import get_storage
@@ -13,7 +14,7 @@ from database.models import User
 class DBUserMiddleware(BaseMiddleware):
     """ Get user from cache or database and check if user CAN_WRITE """
 
-    def __init__(self, prefix='user_rights', cache_expire=timedelta(minutes=1), key='user', middleware_key='db_user') -> None:
+    def __init__(self, prefix='user_info', cache_expire=timedelta(minutes=1), key='user', middleware_key='db_user') -> None:
         # Get storage with prefix and set data ttl
         self.storage = get_storage(key_builder_prefix=prefix, data_ttl=cache_expire)
 
@@ -30,7 +31,7 @@ class DBUserMiddleware(BaseMiddleware):
         chat: types.Chat = event.message.chat if isinstance(event, types.CallbackQuery) else event.chat
         tg_user: types.User = event.from_user
 
-        # Create fsm storage key
+        # Create a storage key
         key = StorageKey(
             bot_id=event.bot,
             chat_id=chat.id,
@@ -56,6 +57,8 @@ class DBUserMiddleware(BaseMiddleware):
         if user.rights != UserRights.BANNED:
             data[self.middleware_key] = user
             return await handler(event, data)
+
+        return CancelHandler()
 
     async def close(self) -> None:
         await self.storage.close()

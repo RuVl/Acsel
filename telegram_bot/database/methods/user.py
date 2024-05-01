@@ -1,9 +1,9 @@
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from database.methods.utils import optional_session
 from database.models import User
 from database.utils import str2int
+from .utils import optional_session
 
 
 @optional_session

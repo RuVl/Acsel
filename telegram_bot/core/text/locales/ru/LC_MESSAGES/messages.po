@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-04-10 21:06+0300\n"
+"POT-Creation-Date: 2024-04-19 19:48+0300\n"
 "PO-Revision-Date: 2024-04-08 21:05+0300\n"
 "Last-Translator: Russu Vladislav <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -19,11 +19,39 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.14.0\n"
 
-#: core/keyboards/inline/products.py:13
+#: core/handlers/products/privilege.py:57
+#: core/handlers/products/privilege.py:151
+msgid "Not found"
+msgstr "Не найдено"
+
+#: core/handlers/products/privilege.py:62
+#: core/handlers/products/privilege.py:156
+msgid "Can not create"
+msgstr "Невозможно создать"
+
+#: core/handlers/products/privilege.py:65
+#: core/handlers/products/privilege.py:159
+msgid "Success"
+msgstr "Успех"
+
+#: core/handlers/products/privilege.py:132
+msgid "Something went wrong"
+msgstr "Что-то пошло не так"
+
+#: core/handlers/products/privilege.py:213
+#, fuzzy
+msgid "Canceled"
+msgstr "Отмена"
+
+#: core/keyboards/inline/products.py:14
+msgid "Create"
+msgstr "Создать"
+
+#: core/keyboards/inline/products.py:15 core/keyboards/inline/products.py:22
 msgid "Cancel"
 msgstr "Отмена"
 
-#: core/text/handlers/products.py:8
+#: core/text/handlers/products.py:11
 msgid ""
 "Welcome to our auto-sale service.\n"
 "Be sure to read the \"Rules and FAQ\" before using the service!"
@@ -31,43 +59,99 @@ msgstr ""
 "Добро пожаловать в сервис автоматической продажи аккаунтов.\n"
 "Обязательно прочитайте \"Правила и FAQ\" перед использованием сервиса!"
 
-#: core/text/handlers/products.py:10
+#: core/text/handlers/products.py:13
 msgid "For any questions, please contact @TEST"
 msgstr "Если возникли вопросы, свяжитесь с @TEST"
 
-#: core/text/handlers/products.py:12
+#: core/text/handlers/products.py:15
 msgid "Choose product category"
 msgstr "Выберите категорию товара"
 
-#: core/text/handlers/products.py:17
+#: core/text/handlers/products.py:21
 msgid "Send name of category"
 msgstr "Введите название категории"
 
-#: core/text/keyboards/common.py:8
+#: core/text/handlers/products.py:22
+#, fuzzy
+msgid "Invalid category name!"
+msgstr "Добавить категорию"
+
+#: core/text/handlers/products.py:25
+#, fuzzy
+msgid "Select category"
+msgstr "Выберите действие"
+
+#: core/text/handlers/products.py:27
+#, fuzzy
+msgid "Send name of product"
+msgstr "Введите название категории"
+
+#: core/text/handlers/products.py:28
+#, fuzzy
+msgid "Invalid product name!"
+msgstr "Невалидное название товара!"
+
+#: core/text/handlers/products.py:30
+msgid "Send price of product"
+msgstr "Отправьте цену товара"
+
+#: core/text/handlers/products.py:31
+#, fuzzy
+msgid "Invalid product price!"
+msgstr "Невалидная цена товара!"
+
+#: core/text/handlers/products.py:34
+#, fuzzy
+msgid "Select product"
+msgstr "Выберите действие"
+
+#: core/text/handlers/products.py:35
+msgid "Send files of product"
+msgstr "Отправьте файлы товара"
+
+#: core/text/handlers/products.py:43
+msgid "Category: `{Category.name}`"
+msgstr "Категория: `{Category.name}`"
+
+#: core/text/handlers/products.py:51
+msgid ""
+"Product:\n"
+"Name: `{Product.name}`\n"
+"Price: `{Product.price}`"
+msgstr ""
+"Продукт:\n"
+"Название: `{Product.name}`\n"
+"Цена: `{Product.price}`"
+
+#: core/text/keyboards/common.py:10
 msgid "Select action"
 msgstr "Выберите действие"
 
-#: core/text/keyboards/common.py:10
+#: core/text/keyboards/common.py:12
 msgid "Buy"
 msgstr "Купить"
 
-#: core/text/keyboards/common.py:11
+#: core/text/keyboards/common.py:13
 msgid "Support"
 msgstr "Поддержка"
 
-#: core/text/keyboards/common.py:13
+#: core/text/keyboards/common.py:15
 msgid "Add category"
 msgstr "Добавить категорию"
 
-#: core/text/keyboards/common.py:14
+#: core/text/keyboards/common.py:16
 msgid "Add product"
 msgstr "Добавить продукт"
 
-#: core/text/keyboards/common.py:16
+#: core/text/keyboards/common.py:17
+msgid "Add files"
+msgstr "Добавить файлы"
+
+#: core/text/keyboards/common.py:19
 msgid "English"
 msgstr "Английский"
 
-#: core/text/keyboards/common.py:17
+#: core/text/keyboards/common.py:20
 msgid "Russian"
 msgstr "Русский"
 

@@ -7,6 +7,9 @@ volumes:
   redis_volume:
     driver: local
 
+  product_volume:
+    driver: local
+
 services:
   postgres:
     image: postgres:16.2
@@ -49,7 +52,9 @@ services:
       - POSTGRES_PORT=5432
       - REDIS_HOST=redis
       - REDIS_PORT=6379
+      - PRODUCTS_FOLDER=/usr/src/files
     volumes:
+      - product_volume:/usr/src/files
       - ./telegram_bot:/usr/src/app
     depends_on:
       postgres:

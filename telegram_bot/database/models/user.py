@@ -3,8 +3,8 @@ from typing import Optional
 from sqlalchemy import Column, Integer, BigInteger, String, Enum
 from sqlalchemy.orm import Mapped
 
+from database.enums import UserRights
 from . import Base
-from ..enums import UserRights
 
 
 class User(Base):

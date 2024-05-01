@@ -1,6 +1,6 @@
-aiogram==3.4.1
+aiogram==3.5.0
 
-redis[hiredis]==5.0.3
+redis[hiredis]==5.0.4
 
 alembic==1.13.1
 SQLAlchemy[asyncio]==2.0.29

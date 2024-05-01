@@ -1,5 +1,10 @@
 from os import environ
+from pathlib import Path
 from typing import Final
+
+
+class MainKeys:
+    PRODUCTS_FOLDER: Final[Path] = Path(environ.get('PRODUCTS_FOLDER')).resolve()
 
 
 class TelegramKeys:

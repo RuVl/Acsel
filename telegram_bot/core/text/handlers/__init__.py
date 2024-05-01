@@ -1,1 +1,1 @@
-from .products import CommonMessages, PrivilegeMessages
+from .products import CommonMessages, PrivilegeMessages, CategoryMessages, ProductMessages

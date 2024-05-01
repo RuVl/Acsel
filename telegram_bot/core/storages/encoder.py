@@ -1,6 +1,6 @@
 import json
-import logging
 from datetime import datetime
+from decimal import Decimal
 from pathlib import Path
 from typing import Any
 
@@ -12,33 +12,42 @@ from database import models
 class TGEncoder(json.JSONEncoder):
     """ Write encoder for all you need in state.set_data """
 
+    def __init__(self, *args: Any, **kwargs: Any):
+        self.visited = set()
+        super().__init__(*args, **kwargs)
+
     def default(self, o: Any) -> Any:
-        if isinstance(o, Path):  # pathlib.Path
+        if isinstance(o, Decimal):
+            return float(o)
+        elif isinstance(o, Path):  # pathlib.Path
             return {
-                "_module": o.__module__,
-                "_type": type(o).__name__,
+                "_type": f'{o.__module__}.{type(o).__name__}',
                 "_value": str(o.absolute())
             }
         elif isinstance(o, datetime):  # datetime.datetime
             return {
-                "_module": o.__module__,
-                "_type": type(o).__name__,
+                "_type": 'datetime.datetime',
                 "_value": o.isoformat()
             }
         elif isinstance(o, types.TelegramObject):  # aiogram.types
             return {
-                "_module": o.__module__,
-                "_type": type(o).__name__,
+                "_type": f'{o.__module__}.{type(o).__name__}',
                 "_value": {k: v for k, v in o.__dict__.items() if v is not None}
             }
         elif isinstance(o, models.Base):  # database.models
-            _value = {k: v for k, v in o.__dict__.items() if v is not None}
+            self.visited.add(hash(o))
+
+            # Add attributes to dict and check if wasn't circular references
+            _value = {
+                k: v if not isinstance(v, list) else filter(lambda i: hash(i) not in self.visited, v)
+                for k, v in o.__dict__.items()
+                if v is not None
+            }
+
             _value.pop('_sa_instance_state', None)
             return {
-                "_module": o.__module__,
-                "_type": type(o).__name__,
+                "_type": f'{o.__module__}.{type(o).__name__}',
                 "_value": _value
             }
 
-        logging.warning(f"Cannot serialize {o}")
         return super(TGEncoder, self).default(o)

@@ -1,5 +1,4 @@
 import json
-import logging
 import sys
 from datetime import datetime
 from importlib import util
@@ -24,8 +23,7 @@ class TGDecoder(json.JSONDecoder):
         if module is None:
             spec = util.find_spec(module_name)
             if spec is None:
-                logging.warning(f'Spec of {module_name} is not found!')
-                return None
+                raise ValueError(f'Spec of {module_name} is not found!')
 
             spec.loader = util.LazyLoader(spec.loader)
 
@@ -34,24 +32,28 @@ class TGDecoder(json.JSONDecoder):
                 sys.modules[module_name] = module
                 spec.loader.exec_module(module)
             except ImportError:
-                logging.warning(f'Cannot load module {module_name}!')
-                return None
+                raise ImportError(f'Cannot load module {module_name}!')
 
         # Get a type from module
         type_ = getattr(module, type_name, None)
         if type_ is None:
-            logging.warning(f'Cannot find type {type_name} in module {module_name}!')
-            return None
+            raise ValueError(f'Cannot find type {type_name} in module {module_name}!')
 
         return type_
 
     def object_hook(self, o: dict[str, Any]) -> Any:
-        _module, _type, _value = o.get('_module'), o.get('_type'), o.get('_value')
-        if _module is None or _type is None or _value is None:
+        _type, _value = o.get('_type'), o.get('_value')
+        if _type is None or _value is None:
+            return o
+
+        _module = '.'.join(_type.split('.')[:-1])
+        _type = _type.removeprefix(_module + '.')
+
+        if not _module or not _type:
             return o
 
         # Check for special types
-        if _module == '_datetime' and _type == 'datetime':
+        if _module == _type == 'datetime':
             return datetime.fromisoformat(_value)
 
         # Try to import other modules
@@ -62,7 +64,7 @@ class TGDecoder(json.JSONDecoder):
         o = class_(**_value)
 
         # Additional attributes for instance
-        if _module == 'aiogram.types':
+        if _module.startswith('aiogram.types'):
             o._bot = bot
 
         return o

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-04-10 21:06+0300\n"
+"POT-Creation-Date: 2024-04-19 19:48+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,53 +17,127 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.14.0\n"
 
-#: core/keyboards/inline/products.py:13
+#: core/handlers/products/privilege.py:57
+#: core/handlers/products/privilege.py:151
+msgid "Not found"
+msgstr ""
+
+#: core/handlers/products/privilege.py:62
+#: core/handlers/products/privilege.py:156
+msgid "Can not create"
+msgstr ""
+
+#: core/handlers/products/privilege.py:65
+#: core/handlers/products/privilege.py:159
+msgid "Success"
+msgstr ""
+
+#: core/handlers/products/privilege.py:132
+msgid "Something went wrong"
+msgstr ""
+
+#: core/handlers/products/privilege.py:213
+msgid "Canceled"
+msgstr ""
+
+#: core/keyboards/inline/products.py:14
+msgid "Create"
+msgstr ""
+
+#: core/keyboards/inline/products.py:15 core/keyboards/inline/products.py:22
 msgid "Cancel"
 msgstr ""
 
-#: core/text/handlers/products.py:8
+#: core/text/handlers/products.py:11
 msgid ""
 "Welcome to our auto-sale service.\n"
 "Be sure to read the \"Rules and FAQ\" before using the service!"
 msgstr ""
 
-#: core/text/handlers/products.py:10
+#: core/text/handlers/products.py:13
 msgid "For any questions, please contact @TEST"
 msgstr ""
 
-#: core/text/handlers/products.py:12
+#: core/text/handlers/products.py:15
 msgid "Choose product category"
 msgstr ""
 
-#: core/text/handlers/products.py:17
+#: core/text/handlers/products.py:21
 msgid "Send name of category"
 msgstr ""
 
-#: core/text/keyboards/common.py:8
-msgid "Select action"
+#: core/text/handlers/products.py:22
+msgid "Invalid category name!"
+msgstr ""
+
+#: core/text/handlers/products.py:25
+msgid "Select category"
+msgstr ""
+
+#: core/text/handlers/products.py:27
+msgid "Send name of product"
+msgstr ""
+
+#: core/text/handlers/products.py:28
+msgid "Invalid product name!"
+msgstr ""
+
+#: core/text/handlers/products.py:30
+msgid "Send price of product"
+msgstr ""
+
+#: core/text/handlers/products.py:31
+msgid "Invalid product price!"
+msgstr ""
+
+#: core/text/handlers/products.py:34
+msgid "Select product"
+msgstr ""
+
+#: core/text/handlers/products.py:35
+msgid "Send files of product"
+msgstr ""
+
+#: core/text/handlers/products.py:43
+msgid "Category: `{Category.name}`"
+msgstr ""
+
+#: core/text/handlers/products.py:51
+msgid ""
+"Product:\n"
+"Name: `{Product.name}`\n"
+"Price: `{Product.price}`"
 msgstr ""
 
 #: core/text/keyboards/common.py:10
+msgid "Select action"
+msgstr ""
+
+#: core/text/keyboards/common.py:12
 msgid "Buy"
 msgstr ""
 
-#: core/text/keyboards/common.py:11
+#: core/text/keyboards/common.py:13
 msgid "Support"
 msgstr ""
 
-#: core/text/keyboards/common.py:13
+#: core/text/keyboards/common.py:15
 msgid "Add category"
 msgstr ""
 
-#: core/text/keyboards/common.py:14
+#: core/text/keyboards/common.py:16
 msgid "Add product"
 msgstr ""
 
-#: core/text/keyboards/common.py:16
+#: core/text/keyboards/common.py:17
+msgid "Add files"
+msgstr ""
+
+#: core/text/keyboards/common.py:19
 msgid "English"
 msgstr ""
 
-#: core/text/keyboards/common.py:17
+#: core/text/keyboards/common.py:20
 msgid "Russian"
 msgstr ""
 

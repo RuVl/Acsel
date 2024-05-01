@@ -6,7 +6,7 @@ from aiogram.fsm.storage.redis import RedisStorage, DefaultKeyBuilder
 from redis.asyncio import Redis
 
 from core.env import RedisKeys
-from core.json_utils import TGDecoder, TGEncoder
+from . import TGDecoder, TGEncoder
 
 
 def get_storage(*,
