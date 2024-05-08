@@ -1,10 +1,5 @@
 from os import environ
-from pathlib import Path
 from typing import Final
-
-
-class MainKeys:
-    PRODUCTS_FOLDER: Final[Path] = Path(environ.get('PRODUCTS_FOLDER')).resolve()
 
 
 class TelegramKeys:
@@ -12,8 +7,8 @@ class TelegramKeys:
 
 
 class RedisKeys:
-    HOST: Final[str] = environ.get('REDIS_HOST', default='localhost')
-    PORT: Final[str] = environ.get('REDIS_PORT', default='6379')
+    HOST: Final[str] = environ.get('DOCKER_REDIS_HOST', default='localhost')
+    PORT: Final[str] = environ.get('DOCKER_REDIS_PORT', default='6379')
 
     DATABASE: Final[str] = environ.get('REDIS_DB', default='0')
 

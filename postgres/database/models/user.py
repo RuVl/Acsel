@@ -11,7 +11,7 @@ if TYPE_CHECKING:
 
 
 class User(Base):
-    """ Table of telegram core users """
+    """ Table of telegram users """
 
     __tablename__ = 'users'
 

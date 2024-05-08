@@ -58,7 +58,7 @@ class DBUserMiddleware(BaseMiddleware):
             # get or create a new user in db
             user = await get_user(tg_user.id)
             if user is None:
-                user = create_user(tg_user)
+                user = await create_user(tg_user)
 
             # update cached user
             storage_data[self.key] = user

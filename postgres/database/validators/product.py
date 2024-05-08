@@ -1,5 +1,4 @@
-from core.text import escape_md_v2
-from database.utils import str2float, str2int
+from database.utils import escape_md_v2, str2float, str2int
 
 
 # TODO raise ValueError instead of return None and show detailed message to user

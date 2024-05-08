@@ -4,12 +4,12 @@ from shutil import copy2
 from sqlalchemy import select, and_, asc
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from core.env import MainKeys
+from database.env import MainKeys
 from database.models import ProductFile, Product
 from database.utils import str2int
-from .category import get_category
-from .product import get_product
-from .utils import optional_session
+from database.methods.category import get_category
+from database.methods.product import get_product
+from database.methods.utils import optional_session
 
 
 @optional_session
@@ -38,6 +38,9 @@ async def create_product_file(product_file: ProductFile, /, session: AsyncSessio
 @optional_session
 async def create_product_file_by_temp_path(path: Path | str, product_id: int | str, session: AsyncSession) -> ProductFile | None:
     product_id, = str2int(product_id)
+    if MainKeys.PRODUCTS_FOLDER is None:
+        return
+
     path = copy2(path, MainKeys.PRODUCTS_FOLDER)
 
     product_file = ProductFile(path=path, product_id=product_id)

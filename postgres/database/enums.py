@@ -3,7 +3,7 @@ import enum
 
 @enum.verify(enum.NAMED_FLAGS)
 class UserRights(enum.IntFlag, boundary=enum.STRICT):
-    """ Telegram core user's rights """
+    """ Telegram user's rights """
 
     CAN_WRITE = 0b001  # Blocked or not
     CAN_BUY = 0b010  # Can buy products

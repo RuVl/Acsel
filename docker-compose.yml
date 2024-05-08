@@ -1,5 +1,3 @@
-version: '3.7'
-
 volumes:
   postgres_volume:
     driver: local
@@ -58,14 +56,10 @@ services:
       - ./postgres/.env
       - ./redis/.env
     environment:
-      - POSTGRES_HOST=postgres  # service name
-      - POSTGRES_PORT=5432  # service port
-      - REDIS_HOST=redis  # service name
-      - REDIS_PORT=6379  # service port
       - PRODUCTS_FOLDER=/usr/src/files  # volume map
     volumes:
       - product_volume:/usr/src/files
-      - ./postgres/database:/usr/src/app/database:ro
+      - ./postgres/database:/usr/src/app/database
     depends_on:
       postgres:
         condition: service_healthy
@@ -82,12 +76,9 @@ services:
     env_file:
       - ./plisio/.env
       - ./postgres/.env
-    environment:
-      - POSTGRES_HOST=postgres
-      - POSTGRES_PORT=5432
     volumes:
       - ./plisio:/usr/src/app
-      - ./postgres/database:/usr/src/app/database:ro
+      - ./postgres/database:/usr/src/app/database
     depends_on:
       postgres:
         condition: service_healthy

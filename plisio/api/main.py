@@ -5,7 +5,35 @@ from fastapi import FastAPI
 
 from api.routers import plisio
 
-app = FastAPI(root_path='/api')
+description = """
+Acsel API is temporary useless.
+It only listen updates from plisio and update transaction status.
+"""
+
+tags_metadata = [
+    {
+        "name": "plisio",
+        "description": "Listen updates from plisio",
+    }
+]
+
+app = FastAPI(
+    title="Acsel API",
+    description=description,
+    version="0.0.1",
+    contact={
+        "name": "RuVl",
+        "url": "https://github.com/RuVl",
+        "email": "vlad5050505@gmail.com",
+    },
+    license_info={
+        "name": "GNU General Public License Version 3",
+        "url": "https://www.gnu.org/licenses/gpl-3.0.html",
+        "identifier": "GPL-3.0",
+    },
+    openapi_tags=tags_metadata,
+    root_path='/api'
+)
 app.include_router(plisio.router)
 
 
