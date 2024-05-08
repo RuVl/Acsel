@@ -3,10 +3,10 @@ from typing import TYPE_CHECKING
 from sqlalchemy import Column, Integer, String, inspect
 from sqlalchemy.orm import Mapped, relationship
 
-from . import Base
+from database.models import Base
 
 if TYPE_CHECKING:
-    from . import Product
+    from database.models import Product
 
 
 class Category(Base):

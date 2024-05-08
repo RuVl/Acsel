@@ -1,2 +1,0 @@
-from .category import validate_category_name
-from .product import validate_product_name, validate_product_description, validate_product_price

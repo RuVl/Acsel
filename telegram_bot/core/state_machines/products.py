@@ -8,6 +8,8 @@ class BuyProductActions(StatesGroup):
     CHOSE_QUANTITY = State()
     SURE_TO_BUY = State()
 
+    CHECK_PAYMENT = State()
+
 
 class CreateCategoryActions(StatesGroup):
     ADD_CATEGORY_NAME = State()

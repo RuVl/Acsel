@@ -3,4 +3,4 @@ from aiogram.enums import ParseMode
 
 from core.env import TelegramKeys
 
-bot = Bot(token=TelegramKeys.TOKEN, parse_mode=ParseMode.MARKDOWN_V2)
+bot = Bot(token=TelegramKeys.API_TOKEN, parse_mode=ParseMode.MARKDOWN_V2)

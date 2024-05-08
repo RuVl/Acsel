@@ -20,7 +20,7 @@ class TGEncoder(json.JSONEncoder):
         super().__init__(*args, **kwargs)
 
     def default(self, o: Any) -> Any:
-        logging.debug(f'Encoding {type(o)}: {o!r}')
+        self.logger.debug(f'Encode {o!r}')
 
         if isinstance(o, Decimal):
             return float(o)

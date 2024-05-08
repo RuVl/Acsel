@@ -15,6 +15,13 @@ class CommonMessages(metaclass=MarkdownMessages):
     choose_category = _('Choose product category')
     choose_product = _('Choose product')
 
+    make_payment = _('Make payment')
+    thanks_for_purchase = _('Thank you for purchase.\n'
+                            'Here is your files:')
+
+    transaction_expired = _('Transaction expired')
+    transaction_cancelled = _('Transaction cancelled')
+
 
 @dataclass(slots=True)
 class PrivilegeMessages(metaclass=MarkdownMessages):
@@ -44,7 +51,7 @@ class PrivilegeMessages(metaclass=MarkdownMessages):
 @dataclass(slots=True)
 class CategoryMessages(InstanceFormatMessages, metaclass=MarkdownMessages):
     def __init__(self, category: Category):
-        super(CategoryMessages, self).__init__(category=category)
+        super().__init__(category=category)
 
     create_info_ = _('Category: `{category.name}`')
 
@@ -52,7 +59,7 @@ class CategoryMessages(InstanceFormatMessages, metaclass=MarkdownMessages):
 @dataclass(slots=True)
 class ProductMessages(InstanceFormatMessages, metaclass=MarkdownMessages):
     def __init__(self, product: Product, category: Category):
-        super(ProductMessages, self).__init__(product=product, category=category)
+        super().__init__(product=product, category=category)
 
     create_info_ = _('Product: `{product.name}`\n'
                      ' · description: `{product.description}`\n'

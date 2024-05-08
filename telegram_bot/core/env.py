@@ -8,7 +8,7 @@ class MainKeys:
 
 
 class TelegramKeys:
-    TOKEN: Final[str] = environ.get('TG_API_TOKEN')
+    API_TOKEN: Final[str] = environ.get('TG_API_TOKEN')
 
 
 class RedisKeys:

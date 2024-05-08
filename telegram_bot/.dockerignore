@@ -1,0 +1,23 @@
+# Project
+.idea/
+.git/
+.github/
+venv/
+.*ignore
+Makefile
+README.md
+
+# Cache
+*.py[cod]
+__pycache__
+
+# Texts
+*.mo
+
+# Environment examples
+.env*
+
+# Docker
+docker-compose*.yml
+Dockerfile
+.dockerignore

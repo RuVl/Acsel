@@ -11,9 +11,18 @@ volumes:
     driver: local
 
 services:
+  nginx:
+    image: nginx:1.26.0
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+
   postgres:
     image: postgres:16.2
-    restart: always
+    restart: unless-stopped
     expose:
       - 5432
     env_file: ./postgres/.env
@@ -27,37 +36,58 @@ services:
 
   redis:
     image: redis:7.2.4
-    restart: always
+    restart: unless-stopped
     expose:
       - 6379
     volumes:
       - redis_volume:/data
+    env_file: ./redis/.env
     healthcheck:
-        test: redis-cli ping
-        interval: 10s
-        timeout: 5s
-        retries: 3
+      test: redis-cli ping
+      interval: 10s
+      timeout: 5s
+      retries: 3
 
   telegram-bot:
     build:
       context: ./telegram_bot
       dockerfile: Dockerfile
-    restart: always
+    restart: unless-stopped
     env_file:
       - ./telegram_bot/.env
       - ./postgres/.env
       - ./redis/.env
     environment:
-      - POSTGRES_HOST=postgres
-      - POSTGRES_PORT=5432
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
-      - PRODUCTS_FOLDER=/usr/src/files
+      - POSTGRES_HOST=postgres  # service name
+      - POSTGRES_PORT=5432  # service port
+      - REDIS_HOST=redis  # service name
+      - REDIS_PORT=6379  # service port
+      - PRODUCTS_FOLDER=/usr/src/files  # volume map
     volumes:
       - product_volume:/usr/src/files
-      - ./telegram_bot:/usr/src/app
+      - ./postgres/database:/usr/src/app/database:ro
     depends_on:
       postgres:
         condition: service_healthy
       redis:
+        condition: service_healthy
+
+  plisio:
+    build:
+      context: ./plisio
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    expose:
+      - 8000
+    env_file:
+      - ./plisio/.env
+      - ./postgres/.env
+    environment:
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+    volumes:
+      - ./plisio:/usr/src/app
+      - ./postgres/database:/usr/src/app/database:ro
+    depends_on:
+      postgres:
         condition: service_healthy

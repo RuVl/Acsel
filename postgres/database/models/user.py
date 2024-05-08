@@ -1,10 +1,13 @@
-from typing import Optional
+from typing import Optional, TYPE_CHECKING
 
 from sqlalchemy import Column, Integer, BigInteger, String, Enum
-from sqlalchemy.orm import Mapped
+from sqlalchemy.orm import Mapped, relationship
 
 from database.enums import UserRights
-from . import Base
+from database.models import Base
+
+if TYPE_CHECKING:
+    from database.models import Transaction
 
 
 class User(Base):
@@ -18,3 +21,5 @@ class User(Base):
     username: Mapped[Optional[str]] = Column(String(255), nullable=True)
 
     rights: Mapped[int] = Column(Enum(UserRights), nullable=False, default=UserRights.USER)
+
+    transactions: Mapped['Transaction'] = relationship('Transaction', back_populates='user')

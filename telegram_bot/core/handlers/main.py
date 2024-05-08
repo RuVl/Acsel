@@ -30,7 +30,10 @@ def register_middlewares(dp: Dispatcher):
     dp.message.middleware(dialog_manager_middleware)
 
     # preserve_fsm_keys middleware
-    dp.update.middleware(PreserveFSMKeysMiddleware())
+    preserve_fsm_middleware = PreserveFSMKeysMiddleware()
+
+    dp.message.middleware(preserve_fsm_middleware)
+    dp.callback_query.middleware(preserve_fsm_middleware)
 
 
 def register_routers(dp: Dispatcher):

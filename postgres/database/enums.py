@@ -17,3 +17,18 @@ class UserRights(enum.IntFlag, boundary=enum.STRICT):
     USER = CAN_WRITE | CAN_BUY | CAN_PARTICIPATE_AUCTION
     MODERATOR = USER | CAN_ADD_PRODUCT | CAN_ADD_FILE
     ADMIN = MODERATOR | CAN_ADD_CATEGORY
+
+
+class TransactionStatuses(enum.StrEnum, boundary=enum.STRICT):
+    """ Transaction possible statuses """
+
+    NEW = 'new'
+    PENDING = 'pending'
+    PENDING_INTERNAL = 'pending internal'
+    EXPIRED = 'expired'
+    COMPLETED = 'completed'
+    MISMATCH = 'mismatch'
+    ERROR = 'error'
+    CANCELLED = 'cancelled'
+
+    NONE = 'none'

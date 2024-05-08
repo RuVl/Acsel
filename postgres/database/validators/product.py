@@ -1,5 +1,5 @@
 from core.text import escape_md_v2
-from database.utils import str2float
+from database.utils import str2float, str2int
 
 
 # TODO raise ValueError instead of return None and show detailed message to user
@@ -20,9 +20,24 @@ def validate_product_description(name: str) -> str:
     return name
 
 
-def validate_product_price(price: str) -> float:
+def validate_product_price(price: str | float) -> float:
     try:
         price, = str2float(price)
         return price
     except ValueError:
         pass
+
+
+def validate_product_quantity(quantity: str | int, max_quantity: int = None) -> int:
+    try:
+        quantity, = str2int(quantity)
+    except ValueError:
+        return
+
+    if quantity < 0:
+        return
+
+    if max_quantity is not None and quantity > max_quantity:
+        return
+
+    return quantity

@@ -12,15 +12,12 @@ ENV PIP_ROOT_USER_ACTION=ignore
 CMD mkdir -p /usr/src/app/
 WORKDIR /usr/src/app/
 
-# Copy and install requirements
-COPY ./requirements.txt ./optional_requirements.txt ./
-RUN pip3 install --no-cache-dir -r requirements.txt -r optional_requirements.txt
+# Copy and install requirements (docker trick)
+COPY ./requirements.txt ./
+RUN pip3 install --no-cache-dir -r requirements.txt
 
 # Copy project to directory
 COPY . ./
 
-# Compile languages
-RUN pybabel compile -d core/text/locales -D messages
-
 # Run api
-ENTRYPOINT python3 run.py
+ENTRYPOINT uvicorn api.main:app --host 0.0.0.0 --port 8000 --proxy-headers

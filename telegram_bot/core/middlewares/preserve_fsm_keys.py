@@ -2,7 +2,6 @@ from typing import Callable, Any, Awaitable
 
 from aiogram import BaseMiddleware, types
 from aiogram.dispatcher.flags import get_flag
-from aiogram.fsm.context import FSMContext
 
 
 class PreserveFSMKeysMiddleware(BaseMiddleware):
@@ -17,7 +16,7 @@ class PreserveFSMKeysMiddleware(BaseMiddleware):
 
         super().__init__()
 
-    def parse_preserve_keys(self, preserve, use_default=True):
+    def parse_preserve_keys(self, preserve: str | list | tuple, use_default=True) -> list[str] | tuple[str]:
         preserve_keys = self.default_preserve_keys if use_default else None
         if isinstance(preserve, tuple | list):
             preserve_keys = preserve
@@ -30,15 +29,15 @@ class PreserveFSMKeysMiddleware(BaseMiddleware):
                        event: types.TelegramObject,
                        data: dict[str, Any],
                        ) -> Any:
-        preserve = get_flag(data, self.flag_name)
+
+        preserve: str | list | tuple = get_flag(data, self.flag_name)
         if preserve is None:  # If no flag provided - skip preserving
             return await handler(event, data)
         preserve_keys = self.parse_preserve_keys(preserve)
 
         # Get current state_data
-        state_data = data.get('state_data')
+        state, state_data = data.get('state'), data.get('state_data')
         if state_data is None:
-            state: FSMContext = data.get('state')
             state_data = await state.get_data()
 
         result = await handler(event, data)
@@ -50,5 +49,3 @@ class PreserveFSMKeysMiddleware(BaseMiddleware):
 
         await state.set_data(new_state_data)
         return result
-
-

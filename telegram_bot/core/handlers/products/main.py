@@ -29,7 +29,7 @@ async def start_handler(msg: Message, db_user: models.User):
     F.text.in_(MainMenuCKbMessages.common_replies()),
     flags={'dialog': f'sent main menu command', 'preserve_fsm': ''}
 )
-async def main_menu_handler_user_replies(msg: Message, db_user: models.User, state: FSMContext, state_data: dict, language: FSMI18nMiddleware) -> Message:
+async def main_menu_handler_user_replies(msg: Message, db_user: models.User, state: FSMContext, language: FSMI18nMiddleware) -> Message:
     await state.clear()
 
     match msg.text:

@@ -104,13 +104,19 @@ def sure2buy_ikb() -> InlineKeyboardMarkup:
 
 def skip_or_cancel_ikb(text: str = None) -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
-    builder.row(
-        InlineKeyboardButton(text=_('Skip'), callback_data='skip')
-    ).row(InlineKeyboardButton(text=text or _('Cancel'), callback_data='cancel'))
+    builder.row(InlineKeyboardButton(text=_('Skip'), callback_data='skip'))\
+        .row(InlineKeyboardButton(text=text or _('Cancel'), callback_data='cancel'))
     return builder.as_markup()
 
 
 def cancel_ikb(text: str = None) -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
     builder.add(InlineKeyboardButton(text=text or _('Cancel'), callback_data='cancel'))
+    return builder.as_markup()
+
+
+def make_payment_ikb(url: str) -> InlineKeyboardMarkup:
+    builder = InlineKeyboardBuilder()
+    builder.row(InlineKeyboardButton(text=_('Make payment'), url=url))\
+        .row(InlineKeyboardButton(text=_('Check payment'), callback_data='check_payment'))
     return builder.as_markup()
