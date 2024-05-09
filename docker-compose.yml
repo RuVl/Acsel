@@ -60,6 +60,7 @@ services:
     volumes:
       - product_volume:/usr/src/files
       - ./postgres/database:/usr/src/app/database
+      - ./telegram_bot/logging:/usr/src/app/logging
     depends_on:
       postgres:
         condition: service_healthy

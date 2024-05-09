@@ -58,8 +58,10 @@ class CategoryMessages(InstanceFormatMessages, metaclass=MarkdownMessages):
 
 @dataclass(slots=True)
 class ProductMessages(InstanceFormatMessages, metaclass=MarkdownMessages):
-    def __init__(self, product: Product, category: Category):
-        super(ProductMessages, self).__init__(product=product, category=category)
+    def __init__(self, product: Product, category: Category, **kwargs):
+        if 'quantity' in kwargs:
+            kwargs['total_amount'] = kwargs['quantity'] * product.price
+        super(ProductMessages, self).__init__(product=product, category=category, **kwargs)
 
     create_info_ = _('Product: `{product.name}`\n'
                      ' · description: `{product.description}`\n'
@@ -74,5 +76,5 @@ class ProductMessages(InstanceFormatMessages, metaclass=MarkdownMessages):
 
     sure2buy_ = _('Order details\n'
                   'Product name: {category.name} \- {product.name}\n'
-                  'Quantity: {product.quantity}\n'
-                  'Total amount: ${product.price * product.quantity}\n')
+                  'Quantity: {quantity}\n'
+                  'Total amount: ${total_amount}\n')

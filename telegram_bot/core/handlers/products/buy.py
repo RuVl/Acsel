@@ -42,7 +42,8 @@ async def get_quantity_handler(msg: Message, state: FSMContext, state_data: dict
 
     product = await get_product(state_product.id)
     if product is None:
-        await msg.reply(_('All products are sold'))
+        logger.warning(f'User {msg.from_user.id} asked for not existed product ({state_product.id})')
+        return await msg.reply(_('All products are sold'))
 
     quantity = validate_product_quantity(quantity, product.quantity)
     if quantity is None:
@@ -55,23 +56,29 @@ async def get_quantity_handler(msg: Message, state: FSMContext, state_data: dict
     await state.update_data(product=product, quantity=quantity)
 
     await state.set_state(BuyProductActions.SURE_TO_BUY)
-    return await msg.answer(ProductMessages(product, category).sure2buy_, reply_markup=sure2buy_ikb())
+    text = ProductMessages(product, category, quantity=quantity).sure2buy_
+    return await msg.answer(text, reply_markup=sure2buy_ikb())
 
 
 @buy_router.callback_query(
     MagicData(F.db_user.rights & UserRights.CAN_BUY),
     BuyProductActions.CHOSE_QUANTITY,
-    F.data.isdecimal() | F.data == 'back'
+    F.data == 'back'
+)
+async def select_quantity_back_handler(clb: CallbackQuery, state: FSMContext):
+    state_data = await state.get_data()
+    await clb.answer()
+    await return2product_select(clb, state, state_data)
+
+
+@buy_router.callback_query(
+    MagicData(F.db_user.rights & UserRights.CAN_BUY),
+    BuyProductActions.CHOSE_QUANTITY,
+    F.data.isdecimal()
 )
 async def select_quantity_handler(clb: CallbackQuery, state: FSMContext):
-    state_data = await state.get_data()
-
-    if clb.data == 'back':
-        await clb.answer()
-        await return2product_select(clb, state, state_data)
-        return
-
     quantity, = str2int(clb.data)
+    state_data = await state.get_data()
     state_product, category = state_data.get('product'), state_data.get('category')
 
     if state_product is None or category is None:
@@ -102,7 +109,8 @@ async def select_quantity_handler(clb: CallbackQuery, state: FSMContext):
     await state.update_data(product=product, quantity=quantity)
 
     await state.set_state(BuyProductActions.SURE_TO_BUY)
-    await clb.message.edit_text(ProductMessages(product, category).sure2buy_, reply_markup=sure2buy_ikb())
+    text = ProductMessages(product, category, quantity=quantity).sure2buy_
+    await clb.message.edit_text(text, reply_markup=sure2buy_ikb())
 
 
 @buy_router.callback_query(

@@ -61,12 +61,12 @@ async def choose_quantity_ikb(product: Product | int = None, max_quantity=100) -
         MAX_QUANTITY = max_quantity
 
     def get_button_number(n: int) -> int:
-        p = 1.5 * log(10 * MAX_QUANTITY)
-        f = MAX_QUANTITY * pow(n / MAX_IN_ROW, p)
-        r = 1 if n < 5 else 5 if n < 50 else 50 if n < 500 else 100
-        return r * floor(ceil(f) / r)
+        p = 1.5 * log(10 * MAX_QUANTITY, 10)
+        f = ceil(MAX_QUANTITY * pow(n / MAX_IN_ROW, p))
+        r = 1 if f < 5 else 5 if f < 50 else 50 if f < 500 else 100
+        return r * floor(f / r)
 
-    button_numbers = set(map(get_button_number, range(1, MAX_IN_ROW)))
+    button_numbers = set(map(get_button_number, range(1, MAX_IN_ROW + 1)))
 
     quantities = [
         InlineKeyboardButton(text=number, callback_data=number)
