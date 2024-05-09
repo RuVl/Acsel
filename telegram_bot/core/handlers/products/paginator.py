@@ -113,7 +113,9 @@ async def change_category_page_handler(clb: CallbackQuery, callback_data: Pagina
     ),
     ProductFactory.filter()
 )
-async def select_product_handler(clb: CallbackQuery, callback_data: ProductFactory, state: FSMContext, state_data: dict):
+async def select_product_handler(clb: CallbackQuery, callback_data: ProductFactory, state: FSMContext):
+    state_data = await state.get_data()
+
     # Get product by id from db
     product = await get_product(callback_data.id)
 

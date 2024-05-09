@@ -51,7 +51,7 @@ class PrivilegeMessages(metaclass=MarkdownMessages):
 @dataclass(slots=True)
 class CategoryMessages(InstanceFormatMessages, metaclass=MarkdownMessages):
     def __init__(self, category: Category):
-        super().__init__(category=category)
+        super(CategoryMessages, self).__init__(category=category)
 
     create_info_ = _('Category: `{category.name}`')
 
@@ -59,20 +59,20 @@ class CategoryMessages(InstanceFormatMessages, metaclass=MarkdownMessages):
 @dataclass(slots=True)
 class ProductMessages(InstanceFormatMessages, metaclass=MarkdownMessages):
     def __init__(self, product: Product, category: Category):
-        super().__init__(product=product, category=category)
+        super(ProductMessages, self).__init__(product=product, category=category)
 
     create_info_ = _('Product: `{product.name}`\n'
                      ' · description: `{product.description}`\n'
                      ' · price: $`{product.price}`\n'
                      ' · category: `{category.name}`')
 
-    buy_info_ = _('You have chosen: *{category.name}* - *{product.name}*\n'
+    buy_info_ = _('You have chosen: *{category.name}* \- *{product.name}*\n'
                   '{product.description}\n'
                   'Available for purchase: *{product.quantity}*\n'
                   'Price per unit: $*{product.price}*\n\n'
                   '_Enter the desired amount of product or use the buttons below_')
 
     sure2buy_ = _('Order details\n'
-                  'Product name: {category.name} - {product.name}\n'
+                  'Product name: {category.name} \- {product.name}\n'
                   'Quantity: {product.quantity}\n'
                   'Total amount: ${product.price * product.quantity}\n')

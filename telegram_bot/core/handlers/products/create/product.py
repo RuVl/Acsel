@@ -149,3 +149,7 @@ async def create_product_handler(clb: CallbackQuery, state: FSMContext):
 
     await clb.message.delete()
     await state.clear()
+
+
+# TODO if price is invalid send invalid message and message for cancel,
+#  add back button for each step

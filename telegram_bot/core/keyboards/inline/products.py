@@ -1,3 +1,5 @@
+from math import log, floor, ceil
+
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.utils.i18n import gettext as _
 from aiogram.utils.keyboard import InlineKeyboardBuilder
@@ -49,9 +51,7 @@ async def choose_quantity_ikb(product: Product | int = None, max_quantity=100) -
         :param max_quantity: Maximum quantity if product is not provided
     """
 
-    VALUES = (1, 5, 10, 25, 50, 100, 200, 500, 1000, 2000, 5000)
-    MAX_IN_ROW = 3
-
+    MAX_IN_ROW = 6
     if isinstance(product, Product):
         MAX_QUANTITY = product.quantity
     elif isinstance(product, int):
@@ -60,26 +60,23 @@ async def choose_quantity_ikb(product: Product | int = None, max_quantity=100) -
     else:
         MAX_QUANTITY = max_quantity
 
-    available_values = list(filter(lambda v: v <= MAX_QUANTITY, VALUES))
+    def get_button_number(n: int) -> int:
+        p = 1.5 * log(10 * MAX_QUANTITY)
+        f = MAX_QUANTITY * pow(n / MAX_IN_ROW, p)
+        r = 1 if n < 5 else 5 if n < 50 else 50 if n < 500 else 100
+        return r * floor(ceil(f) / r)
 
-    if len(available_values) > MAX_IN_ROW:
-        step = int(len(available_values) / MAX_IN_ROW) + 1
-    else:
-        step = 1
+    button_numbers = set(map(get_button_number, range(1, MAX_IN_ROW)))
 
     quantities = [
-        InlineKeyboardButton(text=v, callback_data=str(v))
-        for v in available_values[::step]
+        InlineKeyboardButton(text=number, callback_data=number)
+        for number in map(str, button_numbers)
     ]
 
     builder = InlineKeyboardBuilder()
-    builder.row(
-        *quantities
-    ).row(
-        InlineKeyboardButton(text='back', callback_data='back')
-    ).row(
-        InlineKeyboardButton(text='cancel', callback_data='cancel')
-    )
+    builder.row(*quantities) \
+        .row(InlineKeyboardButton(text='back', callback_data='back')) \
+        .row(InlineKeyboardButton(text='cancel', callback_data='cancel'))
 
     return builder.as_markup()
 
@@ -104,7 +101,7 @@ def sure2buy_ikb() -> InlineKeyboardMarkup:
 
 def skip_or_cancel_ikb(text: str = None) -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
-    builder.row(InlineKeyboardButton(text=_('Skip'), callback_data='skip'))\
+    builder.row(InlineKeyboardButton(text=_('Skip'), callback_data='skip')) \
         .row(InlineKeyboardButton(text=text or _('Cancel'), callback_data='cancel'))
     return builder.as_markup()
 
@@ -117,6 +114,6 @@ def cancel_ikb(text: str = None) -> InlineKeyboardMarkup:
 
 def make_payment_ikb(url: str) -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
-    builder.row(InlineKeyboardButton(text=_('Make payment'), url=url))\
+    builder.row(InlineKeyboardButton(text=_('Make payment'), url=url)) \
         .row(InlineKeyboardButton(text=_('Check payment'), callback_data='check_payment'))
     return builder.as_markup()
